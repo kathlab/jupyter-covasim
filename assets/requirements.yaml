@@ -1,0 +1,37 @@
+name: juco
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - notebook
+  - numba
+  - numpy
+  - pandas
+  - python #>=3.9 # >=3.10 introduces problems with libgcc-ng deps
+  - scikit-learn<=0.24.1
+  - scipy
+  - networkx
+  - libgcc-ng
+  - matplotlib
+  - gcc_linux-64 # covasim
+  - twisted # covasim
+  - werkzeug # covasim
+  - flask-socketio>=5.3.0
+  - gunicorn
+  - ipywidgets
+  - plotly
+  - conda-forge::python-igraph
+  - conda-forge::fire
+  - conda-forge::statsmodels
+  - pip
+  - pip:
+    - scirisweb>=0.17.0
+    - sciris>=2.0.4
+    #- flask-socketio==4.3.2 # downgrade to avoid werkzeug.serving error
+    #- gunicorn
+    # - ipywidgets
+    # - plotly
+    #- fire
+    # - statsmodels
+    # - networkx
+    # - igraph

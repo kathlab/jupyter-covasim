@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  juco:
+    image: local/jupytercovasim:latest
+    container_name: jupytercovasim
+    command: /miniconda/envs/juco/bin/jupyter notebook --allow-root --port=8888 --ip 0.0.0.0 --no-browser
+    # command: supervisord -c /etc/supervisord.conf
+    # command: bash
+    # stdin_open: true
+    # tty: true
+    ports: # Host:Container
+      - "8888:8888" # Jupyter Notebook
+      # - "8000:80" # Covasim Webapp
+    volumes:
+      - type: bind
+        source: ./assets
+        target: /assets
+      - type: bind
+        source: ./shared
+        target: /shared
+      - type: bind
+        source: ./notebooks
+        target: /notebooks
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+# volumes:
+#   juco:
