@@ -6,7 +6,7 @@ ARG PROJECT="Jupyter-Covasim"
 ARG PACKAGES="git mc htop neovim gcc supervisor curl nginx"
 
 # miniconda
-ARG CONDASETUP=Miniconda3-py310_22.11.1-1-Linux-x86_64.sh
+ARG CONDASETUP=Miniconda3-py39_22.11.1-1-Linux-x86_64.sh
 ARG CONDAURL=https://repo.anaconda.com/miniconda/${CONDASETUP}
 ARG CONDADIR="/miniconda"
 ARG CONDAENV=juco
@@ -15,7 +15,7 @@ ARG CONDADEPS=requirements.yaml
 
 # miniconda environment
 ENV PATH=${CONDADIR}/bin:${PATH}
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${CONDA_PREFIX}/lib/
+ENV LD_LIBRARY_PATH=${CONDA_PREFIX}/lib/:$LD_LIBRARY_PATH
 
 # covasim
 ARG COVASIM_DIR=/covasim
@@ -30,12 +30,11 @@ ENV PATH="/miniconda/bin:${PATH}"
 RUN apt update && apt install -y ${PACKAGES}
 
 ## install miniconda
-ADD --checksum=sha256:00938c3534750a0e4069499baf8f4e6dc1c2e471c86a59caa0dd03f4a9269db6 ${CONDAURL} /
+ADD --checksum=sha256:e685005710679914a909bfb9c52183b3ccc56ad7bb84acc861d596fcbe5d28bb ${CONDAURL} /
 RUN chmod a+x /${CONDASETUP}
 RUN /bin/bash /${CONDASETUP} -b -p ${CONDADIR} # /bin/bash workaround for defect shellscript
 
 # copy conda dependency files for generation at build time (not at start-up time)
-# ADD --chown=1000:root assets/environment.yaml ${SDDIR}
 ADD --chown=1000:root assets/${CONDADEPS} /root
 
 ## setup conda environment
@@ -83,13 +82,11 @@ RUN python3 -m pip install .
 WORKDIR /notebooks
 
 ## volumes
-VOLUME [ "/assets" ]
-VOLUME [ "/shared" ]
 VOLUME [ "/notebooks" ]
-VOLUME [ "/covasim" ]
+VOLUME [ "/root/.cache" ] # cache volume (pip3) (avoid pip installs)
 
 # jupyter notebook
 EXPOSE 8888
 
 # covasim webapp
-EXPOSE 80
+EXPOSE 8000

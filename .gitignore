@@ -1,2 +1,5 @@
 **/notebooks/*.ipynb
 **/notebooks/.ipynb_checkpoints
+**/notebooks/supervisord.*
+**/covasim/covasim
+**/covasim/webapp
