@@ -1,6 +1,6 @@
 # Jupyter Notebook with Covasim
 
-This docker project creates a container with Jupyter Notebook and Covasim. __The web gui of Covasim currently does not work!__
+This docker project creates a container with Jupyter Notebook and Covasim with Covasim web app.
 
 Docker requirements:
 ---
