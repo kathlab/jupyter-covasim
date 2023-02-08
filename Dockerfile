@@ -34,6 +34,9 @@ ADD --checksum=sha256:e685005710679914a909bfb9c52183b3ccc56ad7bb84acc861d596fcbe
 RUN chmod a+x /${CONDASETUP}
 RUN /bin/bash /${CONDASETUP} -b -p ${CONDADIR} # /bin/bash workaround for defect shellscript
 
+## update conda if current version is not up-to-date
+RUN conda update -n base -c defaults conda
+
 # copy conda dependency files for generation at build time (not at start-up time)
 ADD --chown=1000:root assets/${CONDADEPS} /root
 
@@ -86,7 +89,7 @@ VOLUME [ "/notebooks" ]
 VOLUME [ "/root/.cache" ] # cache volume (pip3) (avoid pip installs)
 
 # jupyter notebook
-EXPOSE 8888
+EXPOSE 8888/tcp
 
 # covasim webapp
-EXPOSE 8000
+EXPOSE 8000/tcp
